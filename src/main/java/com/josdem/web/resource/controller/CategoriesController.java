@@ -8,7 +8,7 @@ import java.util.List;
 @RestController
 public class CategoriesController {
 
-  @GetMapping("/categories")
+  @GetMapping("/categorie")
   public List<String> getCategories() {
     return List.of("Healing", "Energy", "Healthy", "Boost");
   }
