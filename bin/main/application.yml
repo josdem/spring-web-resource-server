@@ -6,3 +6,4 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://auth.josdem.io/
+          
