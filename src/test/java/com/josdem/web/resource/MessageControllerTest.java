@@ -29,6 +29,7 @@ import static org.springframework.security.oauth2.core.AuthorizationGrantType.CL
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.GRANT_TYPE;
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.SCOPE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
@@ -84,5 +85,19 @@ class MessageControllerTest {
         .andExpect(status().isOk())
         .andExpect(
             result -> assertEquals("Secret message!", result.getResponse().getContentAsString()));
+  }
+
+  @Test
+  @DisplayName("it post secret message")
+  void shouldPostSecretMessage(TestInfo testInfo) throws Exception {
+    log.info("Running: {}", testInfo.getDisplayName());
+    mockMvc
+        .perform(
+            post("/message")
+                .header(AUTHORIZATION, BEARER + response.getBody().getAccessToken())
+                .content("Hello World!"))
+        .andExpect(status().isOk())
+        .andExpect(
+            result -> assertEquals("Content: Hello World!", result.getResponse().getContentAsString()));
   }
 }
