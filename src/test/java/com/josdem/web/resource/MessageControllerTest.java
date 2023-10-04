@@ -45,6 +45,7 @@ class MessageControllerTest {
   public static final String WRITE = "write";
   public static final String URL = "https://auth.josdem.io/oauth2/token";
   public static final String BEARER = "Bearer ";
+  public static final String BASIC = "Basic ";
 
   private final RestTemplate restTemplate = new RestTemplate();
   private final HttpHeaders httpHeaders = new HttpHeaders();
@@ -57,7 +58,7 @@ class MessageControllerTest {
   @BeforeAll
   void setup() {
     httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-    httpHeaders.add(AUTHORIZATION, CredentialsEncoder.encode(TEST_USERNAME, TEST_PASSWORD));
+    httpHeaders.add(AUTHORIZATION, BASIC + CredentialsEncoder.encode(TEST_USERNAME, TEST_PASSWORD));
     body.add(GRANT_TYPE, CLIENT_CREDENTIALS.getValue());
     body.add(SCOPE, WRITE);
     httpEntity = new HttpEntity<>(body, httpHeaders);
