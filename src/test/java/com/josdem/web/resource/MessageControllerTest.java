@@ -17,16 +17,20 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.GRANT_TYPE;
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.SCOPE;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @SpringBootTest
@@ -40,9 +44,11 @@ class MessageControllerTest {
   public static final String TEST_PASSWORD = "secret";
   public static final String WRITE = "write";
   public static final String URL = "https://auth.josdem.io/oauth2/token";
+  public static final String BEARER = "Bearer ";
 
   private final RestTemplate restTemplate = new RestTemplate();
   private final HttpHeaders httpHeaders = new HttpHeaders();
+  private final MockMvc mockMvc;
 
   private HttpEntity<MultiValueMap> httpEntity;
   private ResponseEntity<AuthToken> response;
@@ -60,9 +66,13 @@ class MessageControllerTest {
 
   @Test
   @DisplayName("it gets client ID")
-  void shouldGetClientId(TestInfo testInfo) {
+  void shouldGetClientId(TestInfo testInfo) throws Exception {
     log.info("Running: {}", testInfo.getDisplayName());
     assertNotNull(response.getBody().getAccessToken());
-    // Get client ID with mockMvc
+    mockMvc
+        .perform(get("/").header(AUTHORIZATION, BEARER + response.getBody().getAccessToken()))
+        .andExpect(status().isOk())
+        .andExpect(
+            result -> assertEquals("Hello, client!", result.getResponse().getContentAsString()));
   }
 }
