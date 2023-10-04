@@ -24,6 +24,9 @@ import org.springframework.web.client.RestTemplate;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.GRANT_TYPE;
+import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.SCOPE;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
 
 @Slf4j
 @SpringBootTest
@@ -48,8 +51,8 @@ class MessageControllerTest {
   void setup() {
     httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
     httpHeaders.add(AUTHORIZATION, CredentialsEncoder.encode(TEST_USERNAME, TEST_PASSWORD));
-    body.add("grant_type", "client_credentials");
-    body.add("scope", "write");
+    body.add(GRANT_TYPE, CLIENT_CREDENTIALS.getValue());
+    body.add(SCOPE, "write");
     httpEntity = new HttpEntity<>(body, httpHeaders);
     response = restTemplate.postForEntity(URL, httpEntity, AuthToken.class);
   }
