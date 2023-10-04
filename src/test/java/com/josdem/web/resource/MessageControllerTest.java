@@ -23,7 +23,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
@@ -68,11 +67,22 @@ class MessageControllerTest {
   @DisplayName("it gets client ID")
   void shouldGetClientId(TestInfo testInfo) throws Exception {
     log.info("Running: {}", testInfo.getDisplayName());
-    assertNotNull(response.getBody().getAccessToken());
     mockMvc
         .perform(get("/").header(AUTHORIZATION, BEARER + response.getBody().getAccessToken()))
         .andExpect(status().isOk())
         .andExpect(
             result -> assertEquals("Hello, client!", result.getResponse().getContentAsString()));
+  }
+
+  @Test
+  @DisplayName("it gets secret message")
+  void shouldGetsSecretMessage(TestInfo testInfo) throws Exception {
+    log.info("Running: {}", testInfo.getDisplayName());
+    mockMvc
+        .perform(
+            get("/message").header(AUTHORIZATION, BEARER + response.getBody().getAccessToken()))
+        .andExpect(status().isOk())
+        .andExpect(
+            result -> assertEquals("Secret message!", result.getResponse().getContentAsString()));
   }
 }

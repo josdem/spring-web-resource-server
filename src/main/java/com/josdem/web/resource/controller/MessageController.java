@@ -21,7 +21,7 @@ public class MessageController {
 
   @GetMapping("/message")
   public String message() {
-    return "secret message";
+    return "Secret message!";
   }
 
   @PostMapping("/message")
