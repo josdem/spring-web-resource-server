@@ -24,9 +24,9 @@ import org.springframework.web.client.RestTemplate;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.GRANT_TYPE;
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.SCOPE;
-import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
 
 @Slf4j
 @SpringBootTest
@@ -38,6 +38,7 @@ class MessageControllerTest {
 
   public static final String TEST_USERNAME = "client";
   public static final String TEST_PASSWORD = "secret";
+  public static final String WRITE = "write";
   public static final String URL = "https://auth.josdem.io/oauth2/token";
 
   private final RestTemplate restTemplate = new RestTemplate();
@@ -52,7 +53,7 @@ class MessageControllerTest {
     httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
     httpHeaders.add(AUTHORIZATION, CredentialsEncoder.encode(TEST_USERNAME, TEST_PASSWORD));
     body.add(GRANT_TYPE, CLIENT_CREDENTIALS.getValue());
-    body.add(SCOPE, "write");
+    body.add(SCOPE, WRITE);
     httpEntity = new HttpEntity<>(body, httpHeaders);
     response = restTemplate.postForEntity(URL, httpEntity, AuthToken.class);
   }
@@ -61,7 +62,6 @@ class MessageControllerTest {
   @DisplayName("it gets client ID")
   void shouldGetClientId(TestInfo testInfo) {
     log.info("Running: {}", testInfo.getDisplayName());
-    log.info("Response: {}", response);
     assertNotNull(response.getBody().getAccessToken());
     // Get client ID with mockMvc
   }
