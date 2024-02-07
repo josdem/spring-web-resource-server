@@ -20,5 +20,4 @@ public class AuthToken {
 
   @JsonProperty("scope")
   private String scope;
-
 }
