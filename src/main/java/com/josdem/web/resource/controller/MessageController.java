@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MessageController {
 
+  private String message = "Secret message!";
+
   @GetMapping("/")
   public String index(@AuthenticationPrincipal Jwt jwt) {
     return String.format("Hello, %s!", jwt.getSubject());
@@ -21,11 +23,13 @@ public class MessageController {
 
   @GetMapping("/message")
   public String message() {
-    return "Secret message!";
+    return message;
   }
 
   @PostMapping("/message")
   public String createMessage(@RequestBody String message) {
+    log.info("Message received: {}", message);
+    this.message = message;
     return String.format("Content: %s", message);
   }
 }
