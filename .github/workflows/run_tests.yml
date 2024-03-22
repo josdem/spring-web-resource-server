@@ -5,8 +5,8 @@ on:
   pull_request:
     branches: [ "main" ]
 env:
-  credentials.client: ${{ secrets.CLIENT }}
-  credentials.secret: ${{ secrets.SECRET }}
+  CLIENT: ${{ secrets.CLIENT }}
+  SECRET: ${{ secrets.SECRET }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,4 +19,4 @@ jobs:
         distribution: 'temurin'
         cache: gradle
     - name: Build with Gradle
-      run: gradle test
+      run: gradle -Pcredentials.client=${CLIENT} -Pcredentials.secret=${SECRET} test
