@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.josdem.web.resource.config.TestConfig;
 import com.josdem.web.resource.model.AuthToken;
 import com.josdem.web.resource.util.CredentialsEncoder;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +46,6 @@ class MessageControllerTest {
   public static final String URL = "https://auth.josdem.io/oauth2/token";
   public static final String BEARER = "Bearer ";
   public static final String BASIC = "Basic ";
-
 
   @Value("${CLIENT}")
   private String client;
