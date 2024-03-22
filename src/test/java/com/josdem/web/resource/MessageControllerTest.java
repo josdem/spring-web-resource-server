@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
@@ -47,7 +48,12 @@ class MessageControllerTest {
   public static final String BEARER = "Bearer ";
   public static final String BASIC = "Basic ";
 
-  private final TestConfig testConfig;
+
+  @Value("${CLIENT}")
+  private String client;
+
+  @Value("${SECRET}")
+  private String secret;
 
   private final RestTemplate restTemplate = new RestTemplate();
   private final HttpHeaders httpHeaders = new HttpHeaders();
@@ -59,11 +65,8 @@ class MessageControllerTest {
 
   @BeforeAll
   void setup() {
-    log.info("client: " + testConfig.getClient());
     httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-    httpHeaders.add(
-        AUTHORIZATION,
-        BASIC + CredentialsEncoder.encode(testConfig.getClient(), testConfig.getSecret()));
+    httpHeaders.add(AUTHORIZATION, BASIC + CredentialsEncoder.encode(client, secret));
     body.add(GRANT_TYPE, CLIENT_CREDENTIALS.getValue());
     body.add(SCOPE, WRITE);
     httpEntity = new HttpEntity<>(body, httpHeaders);
