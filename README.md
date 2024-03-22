@@ -47,6 +47,13 @@ Then do a GET request to see your client ID:
 curl -H "Authorization: Bearer $TOKEN" http://localhost:8081/
 ```
 
+To run tests cases:
+```bash
+export CLIENT=client
+export SECRET=secret
+gradle test
+```
+
 #### Read this as reference
 
 * http://josdem.io/techtalk/spring/spring_webflux_security/
