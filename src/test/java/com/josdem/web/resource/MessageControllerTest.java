@@ -59,6 +59,7 @@ class MessageControllerTest {
 
   @BeforeAll
   void setup() {
+    log.info("client: " + testConfig.getClient());
     httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
     httpHeaders.add(
         AUTHORIZATION,
