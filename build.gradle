@@ -49,6 +49,7 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	systemProperties = System.properties
 }
 
 test.dependsOn("spotlessApply")
