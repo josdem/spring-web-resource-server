@@ -15,9 +15,11 @@ gradle bootRun
 gradle bootRun -Dspring.profiles.active=prod
 ```
 
+**Note:** This project uses this [Authorization Server](https://github.com/josdem/spring-boot-authorization-server) to grant access tokens, so you need to run that project in your local computer in order to execute this project.
+
 #### To issue a token
 ```bash
-curl -X POST https://auth.josdem.io/oauth2/token -u "client:secret" -d "grant_type=client_credentials" -d "scope=write"
+curl -X POST http://localhost:9000/oauth2/token -u "client:secret" -d "grant_type=client_credentials" -d "scope=write"
 ```
 
 And you should get a response like
@@ -44,8 +46,6 @@ Then do a GET request to see your client ID:
 ```bash
 curl -H "Authorization: Bearer $TOKEN" http://localhost:8081/
 ```
-
-**Note:** This project uses this [Authorization Server](https://github.com/josdem/spring-boot-authorization-server) to grant access tokens
 
 #### Read this as reference
 
